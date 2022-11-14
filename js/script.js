@@ -1,11 +1,13 @@
-let timerSeconds = 30;
+let timerSeconds = 10;
 let timerId;
+const htmlSeconds = document.getElementById("seconds");
 const startGame = document.getElementById("start_game");
 const numberList = document.getElementById("number_list");
 
 startGame.addEventListener("click", () => {
     numberList.innerText = generateNumArray();
     startTimer();
+    setTimeout(fetchNumbers, timerSeconds * 1000);
 })
 
 /**
@@ -19,7 +21,7 @@ function randomNumber(min, max){
 
 /**
  * Genera un array con cinque numeri unici
- * @return {Array} bombList
+ * @return {Array}
  */
 function generateNumArray(){
     const numArrayRandom = []
@@ -42,8 +44,9 @@ function startTimer(){
 
     timerId = setInterval(() => {
         timerSeconds--;
-        console.log(timerSeconds);
+        htmlSeconds.innerText = timerSeconds.toString().padStart( 2, '0' );
         if(timerSeconds <= 0){
+            numberList.innerText = "";
             stopTimer();
             return;
         }
@@ -55,4 +58,22 @@ function startTimer(){
  */
 function stopTimer(){
     clearInterval(timerId);
+}
+
+/**
+ * Chiede cinque numeri all'utente
+ */
+function fetchNumbers(){
+    const numArrayUser = [];
+    
+    while (numArrayUser.length < 5){
+        numUser = prompt("Inserisci un numero");
+        if(!isNaN(numUser)){
+            numArrayUser.push(numUser);
+        } else{
+            alert("Inserisci un numero valido");
+        }
+    }
+    console.log(numArrayUser);
+    return numArrayUser;
 }
