@@ -1,5 +1,6 @@
 let timerSeconds = 10;
 let timerId;
+let numArrayRandom = [];
 const htmlSeconds = document.getElementById("seconds");
 const startGame = document.getElementById("start_game");
 const numberList = document.getElementById("number_list");
@@ -8,6 +9,7 @@ startGame.addEventListener("click", () => {
     numberList.innerText = generateNumArray();
     startTimer();
     setTimeout(fetchNumbers, timerSeconds * 1000);
+    setTimeout(emptyHtml, (timerSeconds * 1000) - 500);
 })
 
 /**
@@ -24,8 +26,6 @@ function randomNumber(min, max){
  * @return {Array}
  */
 function generateNumArray(){
-    const numArrayRandom = []
-
     while (numArrayRandom.length < 5){
         const numRandom = randomNumber(1, 100);
 
@@ -33,9 +33,16 @@ function generateNumArray(){
             numArrayRandom.push(numRandom);
         }
     }
-    console.log(numArrayRandom);
     return numArrayRandom;
 }
+
+/**
+ * Empty Html
+ */
+function emptyHtml(){
+    numberList.innerText = "";
+}
+
 
 /**
  * Fa partire un timer
@@ -46,7 +53,6 @@ function startTimer(){
         timerSeconds--;
         htmlSeconds.innerText = timerSeconds.toString().padStart( 2, '0' );
         if(timerSeconds <= 0){
-            numberList.innerText = "";
             stopTimer();
             return;
         }
@@ -66,14 +72,19 @@ function stopTimer(){
 function fetchNumbers(){
     const numArrayUser = [];
     
-    while (numArrayUser.length < 5){
-        numUser = prompt("Inserisci un numero");
-        if(!isNaN(numUser)){
+    for (i = 0; i < 5; i++){
+        numUser = parseInt(prompt("Inserisci un numero"));
+        if(numArrayRandom.includes(numUser)){
             numArrayUser.push(numUser);
-        } else{
-            alert("Inserisci un numero valido");
         }
     }
+
+    if(numArrayUser.length === numArrayRandom.length){
+        alert("hai indovinato");
+    } else{
+        alert("hai perso");
+    }
+    
     console.log(numArrayUser);
     return numArrayUser;
 }
