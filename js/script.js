@@ -1,8 +1,11 @@
+let timerSeconds = 30;
+let timerId;
 const startGame = document.getElementById("start_game");
 const numberList = document.getElementById("number_list");
 
-startGame.addEventListener("click", function(){
+startGame.addEventListener("click", () => {
     numberList.innerText = generateNumArray();
+    startTimer();
 })
 
 /**
@@ -32,3 +35,24 @@ function generateNumArray(){
     return numArrayRandom;
 }
 
+/**
+ * Fa partire un timer
+ */
+function startTimer(){
+
+    timerId = setInterval(() => {
+        timerSeconds--;
+        console.log(timerSeconds);
+        if(timerSeconds <= 0){
+            stopTimer();
+            return;
+        }
+    }, 1000);
+}
+
+/**
+ * Ferma il timer
+ */
+function stopTimer(){
+    clearInterval(timerId);
+}
